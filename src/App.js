@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 function App() {
+
+  const [score, setScore] = useState(null);
 
   const analyzeResume = async () => {
     try {
@@ -6,7 +10,7 @@ function App() {
 
       const data = await response.json();
 
-      console.log(data);
+      setScore(data.score);
 
     } catch (error) {
       console.error("Error:", error);
@@ -20,6 +24,11 @@ function App() {
       <button onClick={analyzeResume}>
         Analyze Resume
       </button>
+
+      {score !== null && (
+        <h2>Resume Score: {score}</h2>
+      )}
+
     </div>
   );
 }
