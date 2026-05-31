@@ -17,9 +17,25 @@ function App() {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      console.log(file.name);
+    }
+  };
+
   return (
     <div>
       <h1>AI Resume Analyzer</h1>
+
+      <input
+        type="file"
+        onChange={handleFileChange}
+      />
+
+      <br />
+      <br />
 
       <button onClick={analyzeResume}>
         Analyze Resume
@@ -28,7 +44,6 @@ function App() {
       {score !== null && (
         <h2>Resume Score: {score}</h2>
       )}
-
     </div>
   );
 }
