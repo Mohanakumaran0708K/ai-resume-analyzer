@@ -2,26 +2,38 @@ import { useState } from "react";
 
 function App() {
 
-  const [score, setScore] = useState(null);
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
   const analyzeResume = async () => {
+
+    if (!file) {
+      alert("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
-      const response = await fetch("http://localhost:8000/analyze");
+
+      const response = await fetch(
+        "http://localhost:8000/analyze",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
 
       const data = await response.json();
 
-      setScore(data.score);
+      console.log(data);
 
     } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      console.log(file.name);
+      console.error(error);
     }
   };
 
@@ -40,10 +52,6 @@ function App() {
       <button onClick={analyzeResume}>
         Analyze Resume
       </button>
-
-      {score !== null && (
-        <h2>Resume Score: {score}</h2>
-      )}
     </div>
   );
 }
