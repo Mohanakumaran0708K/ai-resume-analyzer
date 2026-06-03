@@ -30,7 +30,7 @@ function App() {
 
       const data = await response.json();
 
-      console.log(data);
+      console.log(data.preview);
 
     } catch (error) {
       console.error(error);
