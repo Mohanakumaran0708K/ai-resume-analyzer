@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function App() {
-
+  const [preview, setPreview] = useState("");
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -30,7 +30,7 @@ function App() {
 
       const data = await response.json();
 
-      console.log(data.preview);
+      setPreview(data.preview);
 
     } catch (error) {
       console.error(error);
@@ -52,6 +52,13 @@ function App() {
       <button onClick={analyzeResume}>
         Analyze Resume
       </button>
+
+      {preview && (
+        <div>
+          <h3>Resume Preview</h3>
+          <p>{preview}</p>
+        </div>
+      )}
     </div>
   );
 }
