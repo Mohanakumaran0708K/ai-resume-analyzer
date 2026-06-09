@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 function App() {
   const [preview, setPreview] = useState("");
   const [file, setFile] = useState(null);
@@ -11,7 +10,6 @@ function App() {
   };
 
   const analyzeResume = async () => {
-
     if (!file) {
       alert("Please select a file");
       return;
@@ -21,12 +19,11 @@ function App() {
     formData.append("file", file);
 
     try {
-
       const response = await fetch(
         "http://localhost:8000/analyze",
         {
           method: "POST",
-          body: formData
+          body: formData,
         }
       );
 
@@ -38,23 +35,34 @@ function App() {
       console.error(error);
     }
   };
-  let scoreColor = "black";
 
-if (score >= 80) {
-  scoreColor = "green";
-} else if (score >= 50) {
-  scoreColor = "orange";
-} else if (score !== null) {
-  scoreColor = "red";
-}
+  let scoreColor = "black";
+  let scoreStatus = "";
+
+  if (score >= 80) {
+    scoreColor = "green";
+    scoreStatus = "Excellent Resume!";
+  } else if (score >= 50) {
+    scoreColor = "orange";
+    scoreStatus = "Good Resume, but there's room for improvement.";
+  } else if (score !== null) {
+    scoreColor = "red";
+    scoreStatus =
+      "Your resume needs improvement. Consider adding more relevant experience and skills.";
+  }
+
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: "800px",
+        margin: "40px auto",
+        padding: "20px",
+        fontFamily: "Arial",
+      }}
+    >
       <h1>AI Resume Analyzer</h1>
 
-      <input
-        type="file"
-        onChange={handleFileChange}
-      />
+      <input type="file" onChange={handleFileChange} />
 
       <br />
       <br />
@@ -62,14 +70,38 @@ if (score >= 80) {
       <button onClick={analyzeResume}>
         Analyze Resume
       </button>
+
       {score !== null && (
-  <h2 style={{ color: scoreColor }}>
-    Resume Score: {score}
-  </h2>
-)}
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "15px",
+            borderRadius: "10px",
+            backgroundColor: "#f4f4f4",
+            textAlign: "center",
+            width: "300px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h3>Resume Score</h3>
+
+          <h1
+            style={{
+              color: scoreColor,
+              margin: "10px 0",
+            }}
+          >
+            {score}/100
+          </h1>
+
+          <p>{scoreStatus}</p>
+        </div>
+      )}
 
       {preview && (
-        <div>
+        <div style={{ marginTop: "20px" }}>
           <h3>Resume Preview</h3>
           <p>{preview}</p>
         </div>
